@@ -5,6 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.bullying.ui.screen.home.HomeScreen
+import com.example.bullying.ui.screen.quest.QuestAddScreen
 import com.example.bullying.ui.screen.quest.QuestListScreen
 
 @Composable
@@ -53,8 +54,18 @@ fun NavGraph() {
         // -------------------------
         // 3. 퀘스트 추가 화면 (다음 단계)
         // -------------------------
+
         composable("quest_add") {
-            // TODO: 다음 단계에서 구현
+            QuestAddScreen(
+                onSave = { quest ->
+                    // TODO: 리스트에 추가 (다음 단계에서 연결)
+                    navController.popBackStack()
+                },
+                onBack = {
+                    navController.popBackStack()
+                }
+            )
         }
+
     }
 }
