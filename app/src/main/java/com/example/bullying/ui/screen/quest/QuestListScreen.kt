@@ -7,29 +7,22 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import com.example.bullying.ui.component.QuestItem
 import com.example.bullying.ui.component.TopBar
 
 // 퀘스트 목록 화면
 @Composable
 fun QuestListScreen(
-    onBack: () -> Unit,                  // 뒤로가기 클릭 시 실행할 함수
-    onAdd: () -> Unit,                   // 퀘스트 추가 버튼 클릭 시 실행할 함수
-    onEdit: (QuestUiModel) -> Unit       // 퀘스트 클릭 시 수정 화면으로 이동하기 위한 함수
+    questList: List<QuestUiModel>, // 현재 퀘스트 목록
+    onBack: () -> Unit,
+    onAdd: () -> Unit,
+    onDelete: (QuestUiModel) -> Unit, // 삭제 요청을 바깥으로 전달
+    onEdit: (QuestUiModel) -> Unit
 ) {
 
     // 삭제 모드 여부를 저장하는 상태
     // true면 삭제 버튼/삭제 UI가 보이도록 사용
     var isDeleteMode by remember { mutableStateOf(false) }
-
-    // 화면에 표시할 퀘스트 목록 상태
-    // 현재는 빈 리스트로 시작
-    var questList by remember {
-        mutableStateOf(
-            listOf<QuestUiModel>()
-        )
-    }
 
     // 화면 전체를 세로로 배치
     Column(modifier = Modifier.fillMaxSize()) {
@@ -61,8 +54,8 @@ fun QuestListScreen(
                         quest = quest,                   // 현재 퀘스트 데이터 전달
                         isDeleteMode = isDeleteMode,     // 삭제 모드 여부 전달
                         onDelete = {
-                            // 삭제 버튼 클릭 시 현재 퀘스트를 목록에서 제거
-                            questList = questList.filter { it.id != quest.id }
+                            // 삭제 버튼 클릭 시 현재 퀘스트 삭제 요청 전달
+                            onDelete(quest)
                         },
                         onClick = {
                             // 퀘스트 클릭 시 수정 화면으로 이동
